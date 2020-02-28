@@ -109,6 +109,7 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
       getDailyTotal(startDate, endDate, userId).then(dailyTotal => {
         dispatch({ type: 'setDailyTotal', payload: { dailyTotal } });
       });
+      return newRecordId;
     } else {
       console.error('Failed to add record');
     }

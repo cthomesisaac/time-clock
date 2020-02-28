@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Container } from 'reactstrap';
 
 import WeeklyReport from './WeeklyReport';
 import UserReport from './UserReport';
@@ -18,7 +18,7 @@ export default function TimeClockAdmin() {
   });
   
   return (
-    <>
+    <Container>
       <Row>
         <Col>
           <h1>Time Clock Administration</h1>
@@ -35,6 +35,6 @@ export default function TimeClockAdmin() {
           <WeeklyReport startDate={startDate.weekly} setStartDate={setStartDate} endDate={endDate.weekly} setEndDate={setEndDate} />
         </Route>
       </Switch>
-    </>
+    </Container>
   );
 }

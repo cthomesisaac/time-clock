@@ -151,7 +151,7 @@ export async function getDailyTotal(startDate, endDate, userId) {
   ];
 
   const aggregate = await records.aggregate(pipeline).first();
-  const dailyTotal = (aggregate.dailyTotal / 3600000).toFixed(2);
+  const dailyTotal = aggregate ? (aggregate.dailyTotal / 3600000).toFixed(2) : null;
 
   return dailyTotal;
 }
@@ -159,4 +159,11 @@ export async function getDailyTotal(startDate, endDate, userId) {
 export async function getUser(userId) {
   const user = await users.findOne({ user_id: userId });
   return user;
+}
+
+export async function getLastRecord(userId) {
+  const query = { owner_id: userId };
+  const options = { sort: { _id: -1 } };
+
+  return await records.findOne(query, options);
 }

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router
 } from 'react-router-dom';
-import { Container } from 'reactstrap';
 
 import { users } from '../stitch';
 import { StitchAuthProvider, useStitchAuth } from './StitchAuth';
@@ -44,9 +43,7 @@ function App() {
   return (
     <>
       <Navigation isLoggedIn={isLoggedIn} userRole={userRole} handleLogout={handleLogout} />
-      <Container>
-        {isLoggedIn ? <AuthSwitch userRole={userRole} /> : <AnonSwitch handleLogin={handleLogin} />}
-      </Container>
+      {isLoggedIn ? <AuthSwitch userRole={userRole} /> : <AnonSwitch handleLogin={handleLogin} />}
     </>
   )
 }
