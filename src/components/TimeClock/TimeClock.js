@@ -61,7 +61,7 @@ export default function TimeClock() {
       timeOut: null
     };
 
-    actions.addRecord(newRecord).then(res => {
+    actions.addRecordFromDaily(newRecord).then(res => {
       setHasClockedIn(true);
       setTime(new Date());
       setLastRecordId(res.insertedId);
