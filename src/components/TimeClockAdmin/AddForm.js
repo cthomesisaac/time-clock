@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import DateTimePicker from 'react-datetime-picker/dist/DateTimePicker';
 import { Form, FormGroup, Button } from 'reactstrap';
 
-export default function AddForm({ date, addRecord, toggle }) {
+export default function AddForm({ type, date, addRecord, toggle }) {
   const [record, setRecord] = useState({
     timeIn: new Date(dayjs(parseInt(date)).startOf('day').toDate()),
     timeOut: new Date(dayjs(parseInt(date)).startOf('day').toDate())
@@ -29,13 +29,13 @@ export default function AddForm({ date, addRecord, toggle }) {
     <Form onSubmit={onSubmit}>
       <FormGroup>
         <div>Time In</div>
-        <DateTimePicker value={record.timeIn} onChange={value => onChange(value, 'timeIn')} clearIcon={null} disableClock />
-        <div>{record.timeIn.toString()}</div>
+        <DateTimePicker value={record.timeIn} onChange={value => onChange(value, 'timeIn')} disableClock />
+        {/* <div>{record.timeIn.toString()}</div> */}
       </FormGroup>
       <FormGroup>
         <div>Time Out</div>
-        <DateTimePicker value={record.timeOut} onChange={value => onChange(value, 'timeOut')} clearIcon={null} disableClock />
-        <div>{record.timeOut.toString()}</div>
+        <DateTimePicker value={record.timeOut} onChange={value => onChange(value, 'timeOut')} disableClock />
+        {/* <div>{record.timeOut.toString()}</div> */}
       </FormGroup>
       <Button type="submit">Save</Button>
     </Form>

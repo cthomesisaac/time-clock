@@ -37,7 +37,7 @@ export default function DailyReport() {
         <h5 className="pt-2 m-0">
           {user.name}
         </h5>
-        <AddModal date={date} addRecord={actions.addRecord} />
+        <AddModal date={date} addRecord={actions.addRecordFromDaily} />
       </div>
       <Table>
         <thead>

@@ -6,6 +6,7 @@ import { Table, Breadcrumb, BreadcrumbItem, ButtonGroup, Button, Row, Col } from
 
 import { useTimeClockRecords } from '../useTimeClockRecords';
 import BankedHours from './BankedHours';
+import AddModal from './AddModal';
 
 export default function UserReport({ startDate, setStartDate, endDate }) {
   const { id } = useParams();
@@ -22,8 +23,11 @@ export default function UserReport({ startDate, setStartDate, endDate }) {
           </BreadcrumbItem>
           <BreadcrumbItem active>User Report</BreadcrumbItem>
         </Breadcrumb>
-        <div className="ml-3">
-          <h3>{user.name}</h3>
+        <div className="mx-3">
+          <div className="d-flex justify-content-between">
+            <h3 className="m-0">{user.name}</h3>
+            <AddModal date={new Date().valueOf()} addRecord={actions.addRecordFromUser} />
+          </div>
           <BankedHours user={user} editUser={actions.editUser} />
         </div>
         <div className="mx-auto mb-1" style={{ width: 'fit-content' }}>

@@ -9,6 +9,7 @@ import {
   getUser,
   users
 } from '../stitch';
+import dayjs from 'dayjs';
 
 const recordReducer = (state, { type, payload }) => {
   switch (type) {
@@ -100,7 +101,7 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
     } */
   }
 
-  async function addRecord(record) {
+  async function addRecordFromDaily(record) {
     record = { owner_id: userId, owner_name: state.user.name, ...record };
     const newRecordId = await records.insertOne(record);
 
@@ -108,6 +109,20 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
       dispatch({ type: 'addRecord', payload: { _id: newRecordId, ...record } });
       getDailyTotal(startDate, endDate, userId).then(dailyTotal => {
         dispatch({ type: 'setDailyTotal', payload: { dailyTotal } });
+      });
+      return newRecordId;
+    } else {
+      console.error('Failed to add record');
+    }
+  }
+
+  async function addRecordFromUser(record) {
+    record = { owner_id: userId, owner_name: state.user.name, ...record };
+    const newRecordId = await records.insertOne(record);
+
+    if (newRecordId) {
+      getUserReport(startDate, endDate, userId).then(timeRecords => {
+        dispatch({ type: 'setRecords', payload: { timeRecords } });
       });
       return newRecordId;
     } else {
@@ -168,7 +183,8 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
     actions: {
       editRecord,
       deleteRecord,
-      addRecord,
+      addRecordFromDaily,
+      addRecordFromUser,
       editUser
     }
   };
