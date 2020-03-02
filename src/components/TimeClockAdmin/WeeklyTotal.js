@@ -8,7 +8,7 @@ export default function WeeklyTotal({ startDate, endDate, userId }) {
   useEffect(() => {
     const getTotalHours = async () => {
       const hours = await getWeeklyTotal(startDate, endDate, userId);
-      setTotalHours(hours.toFixed(2));
+      setTotalHours(hours.toFixed(1));
     };
 
     getTotalHours();

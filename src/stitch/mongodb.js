@@ -102,7 +102,7 @@ export async function getUserReport(startDate, endDate, userId) {
   const report = await records.aggregate(pipeline).toArray();
 
   report.forEach(record => {
-    record.hoursForDay = (record.hoursForDay / 3600000).toFixed(2);
+    record.hoursForDay = (record.hoursForDay / 3600000).toFixed(1);
   });
 
   return report;
@@ -151,7 +151,7 @@ export async function getDailyTotal(startDate, endDate, userId) {
   ];
 
   const aggregate = await records.aggregate(pipeline).first();
-  const dailyTotal = aggregate ? (aggregate.dailyTotal / 3600000).toFixed(2) : null;
+  const dailyTotal = aggregate ? (aggregate.dailyTotal / 3600000).toFixed(1) : null;
 
   return dailyTotal;
 }
