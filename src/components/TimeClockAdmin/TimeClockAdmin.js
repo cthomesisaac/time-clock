@@ -9,11 +9,11 @@ import DailyReport from './DailyReport';
 
 export default function TimeClockAdmin() {
   const [startDate, setStartDate] = useState({
-    weekly: dayjs().day(1).toDate(),
+    weekly: dayjs().day(1).startOf('day').toDate(),
     user: dayjs().startOf('day').subtract(30, 'd').toDate()
   });
   const [endDate, setEndDate] = useState({
-    weekly: dayjs().day(6).toDate(),
+    weekly: dayjs().day(6).endOf('day').toDate(),
     user: dayjs().endOf('day').toDate()
   });
   
