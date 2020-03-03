@@ -12,23 +12,29 @@ export default function AuthSwitch({ userRole }) {
           <Route path="/admin">
             <TimeClockAdmin />
           </Route>
-          <Route exact path="/">
+          <Route path="/dashboard">
             <TimeClock />
           </Route>
-          <Route path="/">
-            <Redirect to="/" />
+          <Route exact path="/">
+            <Redirect to="/dashboard" />
           </Route>
+          {/* <Route path="/">
+            <Redirect to="/" />
+          </Route> */}
         </Switch>
       );
     } else {
       return (
         <Switch>
-          <Route exact path="/">
+          <Route path="/dashboard">
             <TimeClock />
           </Route>
-          <Route path="/">
-            <Redirect to="/" />
+          <Route exact path="/">
+            <Redirect to="/dashboard" />
           </Route>
+          {/* <Route path="/">
+            <Redirect to="/" />
+          </Route> */}
         </Switch>
       );
     }

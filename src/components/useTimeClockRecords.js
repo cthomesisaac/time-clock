@@ -9,7 +9,6 @@ import {
   getUser,
   users
 } from '../stitch';
-import dayjs from 'dayjs';
 
 const recordReducer = (state, { type, payload }) => {
   switch (type) {

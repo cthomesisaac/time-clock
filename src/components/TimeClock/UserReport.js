@@ -2,79 +2,81 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import DatePicker from 'react-datepicker';
-import { Table, Breadcrumb, BreadcrumbItem, ButtonGroup, Button, Row, Col } from 'reactstrap';
+import { Table, Breadcrumb, BreadcrumbItem, ButtonGroup, Button, Container, Row, Col } from 'reactstrap';
 
 import { useTimeClockRecords } from '../useTimeClockRecords';
 import BankedHours from './BankedHours';
 
-export default function UserReport({ startDate, setStartDate, endDate }) {
-  const { id } = useParams();
+export default function UserReport({ currentUser, startDate, setStartDate, endDate }) {
+  // const { id } = useParams();
   /* const [startDate, setStartDate] = useState(dayjs().subtract(30, 'd').toDate());
   const [endDate] = useState(new Date()); */
-  const { records, user, actions } = useTimeClockRecords('user', startDate, endDate, id);
+  const { records } = useTimeClockRecords('user', startDate, endDate, currentUser.id);
 
   return (
-    <Row>
-      <Col>
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/admin">Weekly Report</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem active>User Report</BreadcrumbItem>
-        </Breadcrumb>
-        <div className="ml-3">
-          <h3>{user.name}</h3>
-          <BankedHours user={user} editUser={actions.editUser} />
-        </div>
-        <div className="mx-auto mb-1" style={{ width: 'fit-content' }}>
-          <span className="mr-1">
-            Start Date:
-          </span>
-          <span className="mr-3">
-            <DatePicker selected={startDate} />
-          </span>
-          <span className="mr-1">
-            End Date:
-          </span>
-          <span>
-            <DatePicker selected={endDate} />
-          </span>
-        </div>
-        <ButtonGroup className="mx-auto d-block mb-1" style={{ width: 'fit-content'}}>
-          <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(30, 'd').toDate() }))}>
-            30 days
-          </Button>
-          <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(90, 'd').toDate() }))}>
-            90 days
-          </Button>
-          <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(180, 'd').toDate() }))}>
-            180 days
-          </Button>
-          <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(365, 'd').toDate() }))}>
-            1 year
-          </Button>
-        </ButtonGroup>
-        <Table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Hours</th>
-            </tr>
-          </thead>
-          <tbody>
-            {records.map(record => (
-              <tr key={record._id}>
-                <td>
-                  <Link to={`/admin/user/${id}/${record.rawDate.valueOf()}`}>
-                    {record._id}
-                  </Link>
-                </td>
-                <td>{record.hoursForDay}</td>
+    <Container>
+      <Row>
+        <Col>
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link to="/dashboard/weekly">Weekly Report</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>User Report</BreadcrumbItem>
+          </Breadcrumb>
+          <div className="ml-3">
+            <h3>{currentUser.profile.name}</h3>
+            <BankedHours userId={currentUser.id} />
+          </div>
+          <div className="mx-auto mb-1" style={{ width: 'fit-content' }}>
+            <span className="mr-1">
+              Start Date:
+            </span>
+            <span className="mr-3">
+              <DatePicker selected={startDate} />
+            </span>
+            <span className="mr-1">
+              End Date:
+            </span>
+            <span>
+              <DatePicker selected={endDate} />
+            </span>
+          </div>
+          <ButtonGroup className="mx-auto d-block mb-1" style={{ width: 'fit-content'}}>
+            <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(30, 'd').toDate() }))}>
+              30 days
+            </Button>
+            <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(90, 'd').toDate() }))}>
+              90 days
+            </Button>
+            <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(180, 'd').toDate() }))}>
+              180 days
+            </Button>
+            <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(365, 'd').toDate() }))}>
+              1 year
+            </Button>
+          </ButtonGroup>
+          <Table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Hours</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Col>
-    </Row>
+            </thead>
+            <tbody>
+              {records.map(record => (
+                <tr key={record._id}>
+                  <td>
+                    <Link to={`/dashboard/daily/${record.rawDate.valueOf()}`}>
+                      {record._id}
+                    </Link>
+                  </td>
+                  <td>{record.hoursForDay}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Col>
+      </Row>
+    </Container>
   );
 }

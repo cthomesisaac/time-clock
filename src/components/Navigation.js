@@ -35,6 +35,14 @@ function UserNav({ handleLogout }) {
       <NavbarBrand>
         Time Clock
       </NavbarBrand>
+      <Nav className="mr-auto">
+        <NavItem>
+          <NavLink tag={Link} to="/">Home</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink tag={Link} to="/dashboard/weekly">Reports</NavLink>
+        </NavItem>
+      </Nav>
       <Button onClick={handleLogout}>Log Out</Button>
     </Navbar>
   )
@@ -49,6 +57,9 @@ function AdminNav({ handleLogout }) {
       <Nav className="mr-auto">
         <NavItem>
           <NavLink tag={Link} to="/">Home</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink tag={Link} to="/dashboard/weekly">Reports</NavLink>
         </NavItem>
         <NavItem>
           <NavLink tag={Link} to="/admin">Admin</NavLink>

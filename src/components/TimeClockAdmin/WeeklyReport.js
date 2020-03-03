@@ -36,32 +36,32 @@ export default function WeeklyReport({ startDate, setStartDate, endDate, setEndD
       </div>
       <ButtonGroup className="mx-auto d-block mb-1" style={{ width: 'fit-content' }}>
         <Button onClick={() => {
-          setStartDate(startDate => ({ ...startDate, weekly: dayjs().day(1).toDate() }));
-          setEndDate(endDate => ({ ...endDate, weekly: dayjs().day(6).toDate() }));
+          setStartDate(startDate => ({ ...startDate, weekly: dayjs().startOf('day').day(1).toDate() }));
+          setEndDate(endDate => ({ ...endDate, weekly: dayjs().endOf('day').day(6).toDate() }));
         }}>
           Current week
         </Button>
         <Button onClick={() => {
-          setStartDate(startDate => ({ ...startDate, weekly: dayjs().day(1).subtract(7, 'd').toDate() }));
-          setEndDate(endDate => ({ ...endDate, weekly: dayjs().day(1).subtract(2, 'd').toDate() }));
+          setStartDate(startDate => ({ ...startDate, weekly: dayjs().startOf('day').day(1).subtract(7, 'd').toDate() }));
+          setEndDate(endDate => ({ ...endDate, weekly: dayjs().endOf('day').day(1).subtract(2, 'd').toDate() }));
         }}>
           Last week
         </Button>
         <Button onClick={() => {
-          setStartDate(startDate => ({ ...startDate, weekly: dayjs().day(1).subtract(14, 'd').toDate() }));
-          setEndDate(endDate => ({ ...endDate, weekly: dayjs().day(1).subtract(9, 'd').toDate() }));
+          setStartDate(startDate => ({ ...startDate, weekly: dayjs().startOf('day').day(1).subtract(14, 'd').toDate() }));
+          setEndDate(endDate => ({ ...endDate, weekly: dayjs().endOf('day').day(1).subtract(9, 'd').toDate() }));
         }}>
           2 weeks ago
         </Button>
         <Button onClick={() => {
-          setStartDate(startDate => ({ ...startDate, weekly: dayjs().day(1).subtract(21, 'd').toDate() }));
-          setEndDate(endDate => ({ ...endDate, weekly: dayjs().day(1).subtract(16, 'd').toDate() }));
+          setStartDate(startDate => ({ ...startDate, weekly: dayjs().startOf('day').day(1).subtract(21, 'd').toDate() }));
+          setEndDate(endDate => ({ ...endDate, weekly: dayjs().endOf('day').day(1).subtract(16, 'd').toDate() }));
         }}>
           3 weeks ago
         </Button>
         <Button onClick={() => {
-          setStartDate(startDate => ({ ...startDate, weekly: dayjs().day(1).subtract(28, 'd').toDate() }));
-          setEndDate(endDate => ({ ...endDate, weekly: dayjs().day(1).subtract(23, 'd').toDate() }));
+          setStartDate(startDate => ({ ...startDate, weekly: dayjs().startOf('day').day(1).subtract(28, 'd').toDate() }));
+          setEndDate(endDate => ({ ...endDate, weekly: dayjs().endOf('day').day(1).subtract(23, 'd').toDate() }));
         }}>
           4 weeks ago
         </Button>
