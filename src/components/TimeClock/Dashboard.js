@@ -7,7 +7,7 @@ import { getLastRecord } from '../../stitch';
 import { useStitchAuth } from '../StitchAuth';
 import { useTimeClockRecords } from '../useTimeClockRecords';
 import UserProfile from './UserProfile';
-import DailyReport from './DailyReport';
+import EmbeddedDailyReport from './EmbeddedDailyReport';
 
 export default function Dashboard({ currentUser, startDate, endDate }) {
   // const { currentUser } = useStitchAuth();
@@ -15,7 +15,7 @@ export default function Dashboard({ currentUser, startDate, endDate }) {
   const [hasClockedIn, setHasClockedIn] = useState(false);
   const [lastRecordId, setLastRecordId] = useState();
   // const [reportToShow, setReportToShow] = useState('daily');
-  const { actions } = useTimeClockRecords('daily', startDate, endDate, currentUser.id);
+  const { records, dailyTotal, actions } = useTimeClockRecords('daily', startDate, endDate, currentUser.id);
 
   useEffect(() => {
     async function findLastRecord() {
@@ -116,7 +116,7 @@ export default function Dashboard({ currentUser, startDate, endDate }) {
       </Row>
       <Row>
         <Col>
-          <DailyReport currentUser={currentUser} />
+          <EmbeddedDailyReport currentUser={currentUser} records={records} dailyTotal={dailyTotal} />
           <UserProfile userId={currentUser.id} />
         </Col>
       </Row>

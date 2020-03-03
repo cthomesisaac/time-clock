@@ -6,12 +6,12 @@ import { Table, Container, Row, Col, Breadcrumb, BreadcrumbItem } from 'reactstr
 import { useTimeClockRecords } from '../useTimeClockRecords';
 import DailyTotal from './DailyTotal';
 
-export default function DailyReport({ currentUser, date = dayjs().startOf('day') }) {
+export default function EmbeddedDailyReport({ currentUser, records, dailyTotal, date = dayjs().startOf('day') }) {
   const { dateFromParams } = useParams();
   if (dateFromParams) date = dayjs(parseInt(dateFromParams)).startOf('day');
   const [startDate] = useState(date.startOf('day').toDate());
   const [endDate] = useState(date.startOf('day').add(24, 'hour').toDate());
-  const { records, dailyTotal } = useTimeClockRecords('daily', startDate, endDate, currentUser.id);
+  // const { records, dailyTotal } = useTimeClockRecords('daily', startDate, endDate, currentUser.id);
 
   return (
     <Container>

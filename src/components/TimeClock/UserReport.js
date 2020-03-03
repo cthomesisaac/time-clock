@@ -6,6 +6,7 @@ import { Table, Breadcrumb, BreadcrumbItem, ButtonGroup, Button, Container, Row,
 
 import { useTimeClockRecords } from '../useTimeClockRecords';
 import BankedHours from './BankedHours';
+import DailyTotal from './DailyTotal';
 
 export default function UserReport({ currentUser, startDate, setStartDate, endDate }) {
   // const { id } = useParams();
@@ -41,7 +42,7 @@ export default function UserReport({ currentUser, startDate, setStartDate, endDa
               <DatePicker selected={endDate} />
             </span>
           </div>
-          <ButtonGroup className="mx-auto d-block mb-1" style={{ width: 'fit-content'}}>
+          <ButtonGroup className="mx-auto d-block mb-1" style={{ width: 'fit-content' }}>
             <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(30, 'd').toDate() }))}>
               30 days
             </Button>
@@ -70,6 +71,14 @@ export default function UserReport({ currentUser, startDate, setStartDate, endDa
                       {record._id}
                     </Link>
                   </td>
+                  {/* <td>
+                    <DailyTotal
+                      startDate={dayjs(record.rawDate).startOf('day').toDate()}
+                      endDate={dayjs(record.rawDate).startOf('day').add(24, 'h').toDate()}
+                      currentUser={currentUser}
+                      altValue={record.hoursForDay}
+                    />
+                  </td> */}
                   <td>{record.hoursForDay}</td>
                 </tr>
               ))}
