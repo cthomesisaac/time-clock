@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Button, Container, Col, Row } from 'reactstrap';
 
 import { getLastRecord } from '../../stitch';
 import { useStitchAuth } from '../StitchAuth';
-import { useTimeClockRecords } from '../useTimeClockRecords';
 import Dashboard from './Dashboard';
 import WeeklyReport from './WeeklyReport';
 import UserReport from './UserReport';
-import UserProfile from './UserProfile';
 import DailyReport from './DailyReport';
 
 export default function TimeClock() {
   const { currentUser } = useStitchAuth();
   // const [time, setTime] = useState();
-  // const [hasClockedIn, setHasClockedIn] = useState(false);
+  const [hasClockedIn, setHasClockedIn] = useState(false);
   // const [lastRecordId, setLastRecordId] = useState();
   // const [reportToShow, setReportToShow] = useState('daily');
   const [startDate, setStartDate] = useState({
@@ -28,34 +25,34 @@ export default function TimeClock() {
     user: new Date(),
     daily: dayjs().startOf('day').add(24, 'hour').toDate()
   });
+  const [unclockedHours, setUnclockedHours] = useState(0);
   // const { records, dailyTotal, user, actions } = useTimeClockRecords(reportToShow, startDate.daily, endDate.daily, currentUser.id);
+  
+  useEffect(() => {
+    async function findLastRecord() {
+      const lastRecord = await getLastRecord(currentUser.id);
 
-  // useEffect(() => {
-  //   async function findLastRecord() {
-  //     const lastRecord = await getLastRecord(currentUser.id);
+      if (lastRecord && !lastRecord.timeOut) {
+        setHasClockedIn(true);
+        setUnclockedHours((new Date() - lastRecord.timeIn) / 3600000);
+      }
+    }
 
-  //     if (lastRecord && !lastRecord.timeOut) {
-  //       setHasClockedIn(true);
-  //       setTime(lastRecord.timeIn);
-  //       setLastRecordId(lastRecord._id);
-  //     }
-  //   }
+    /* async function findLastRecord() {
+      const query = { owner_id: currentUser.id };
+      const options = { sort: { _id: -1 } };
 
-  //   /* async function findLastRecord() {
-  //     const query = { owner_id: currentUser.id };
-  //     const options = { sort: { _id: -1 } };
+      const lastRecord = await records.findOne(query, options);
 
-  //     const lastRecord = await records.findOne(query, options);
+      if (lastRecord && !lastRecord.timeOut) {
+        setHasClockedIn(true);
+        setTime(lastRecord.timeIn);
+        setLastRecordId(lastRecord._id);
+      }
+    } */
 
-  //     if (lastRecord && !lastRecord.timeOut) {
-  //       setHasClockedIn(true);
-  //       setTime(lastRecord.timeIn);
-  //       setLastRecordId(lastRecord._id);
-  //     }
-  //   } */
-
-  //   findLastRecord();
-  // }, [currentUser]);
+    findLastRecord();
+  }, [currentUser]);
 
   // function handleClockIn() {
   //   const newRecord = {
@@ -104,18 +101,17 @@ export default function TimeClock() {
 
   return (
     <Switch>
-      {/* <Route path="/:id/user"></Route> */}
       <Route exact path="/dashboard">
-        <Dashboard currentUser={currentUser} startDate={startDate.daily} endDate={endDate.daily} />
+        <Dashboard currentUser={currentUser} startDate={startDate.daily} endDate={endDate.daily} hasClockedIn={hasClockedIn} setHasClockedIn={setHasClockedIn} unclockedHours={unclockedHours} setUnclockedHours={setUnclockedHours} />
       </Route>
       <Route path="/dashboard/weekly">
-        <WeeklyReport currentUser={currentUser} startDate={startDate.weekly} setStartDate={setStartDate} endDate={endDate.weekly} setEndDate={setEndDate} />
+        <WeeklyReport currentUser={currentUser} startDate={startDate.weekly} setStartDate={setStartDate} endDate={endDate.weekly} setEndDate={setEndDate} unclockedHours={unclockedHours} />
       </Route>
       <Route path="/dashboard/user">
-        <UserReport currentUser={currentUser} startDate={startDate.user} setStartDate={setStartDate} endDate={endDate.user} />
+        <UserReport currentUser={currentUser} startDate={startDate.user} setStartDate={setStartDate} endDate={endDate.user} unclockedHours={unclockedHours} />
       </Route>
       <Route path="/dashboard/daily/:dateFromParams">
-        <DailyReport currentUser={currentUser} startDate={startDate.user} setStartDate={setStartDate} endDate={endDate.user} />
+        <DailyReport currentUser={currentUser} startDate={startDate.user} setStartDate={setStartDate} endDate={endDate.user} hasClockedIn={hasClockedIn} unclockedHours={unclockedHours} />
       </Route>
     </Switch>
   );

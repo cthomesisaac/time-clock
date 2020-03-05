@@ -12,7 +12,7 @@ export default function UserReport({ startDate, setStartDate, endDate }) {
   const { id } = useParams();
   /* const [startDate, setStartDate] = useState(dayjs().subtract(30, 'd').toDate());
   const [endDate] = useState(new Date()); */
-  const { records, user, actions } = useTimeClockRecords('user', startDate, endDate, id);
+  const { records, firstRecord, user, actions } = useTimeClockRecords('user', startDate, endDate, id);
 
   return (
     <Row>
@@ -44,7 +44,7 @@ export default function UserReport({ startDate, setStartDate, endDate }) {
             <DatePicker selected={endDate} />
           </span>
         </div>
-        <ButtonGroup className="mx-auto d-block mb-1" style={{ width: 'fit-content'}}>
+        <ButtonGroup className="mx-auto d-block mb-1" style={{ width: 'fit-content' }}>
           <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(30, 'd').toDate() }))}>
             30 days
           </Button>
@@ -66,6 +66,16 @@ export default function UserReport({ startDate, setStartDate, endDate }) {
             </tr>
           </thead>
           <tbody>
+            {firstRecord.map(record => (
+              <tr key={record._id}>
+                <td>
+                  <Link to={`/admin/user/${id}/${record.rawDate.valueOf()}`}>
+                    {record._id}
+                  </Link>
+                </td>
+                <td>{record.hoursForDay.toFixed(1)}</td>
+              </tr>
+            ))}
             {records.map(record => (
               <tr key={record._id}>
                 <td>
@@ -73,7 +83,7 @@ export default function UserReport({ startDate, setStartDate, endDate }) {
                     {record._id}
                   </Link>
                 </td>
-                <td>{record.hoursForDay}</td>
+                <td>{record.hoursForDay.toFixed(1)}</td>
               </tr>
             ))}
           </tbody>

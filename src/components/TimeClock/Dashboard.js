@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Button, Container, Col, Row } from 'reactstrap';
 
 import { getLastRecord } from '../../stitch';
-import { useStitchAuth } from '../StitchAuth';
 import { useTimeClockRecords } from '../useTimeClockRecords';
 import UserProfile from './UserProfile';
 import EmbeddedDailyReport from './EmbeddedDailyReport';
 
-export default function Dashboard({ currentUser, startDate, endDate }) {
+export default function Dashboard({ currentUser, startDate, endDate, hasClockedIn, setHasClockedIn, unclockedHours, setUnclockedHours }) {
   // const { currentUser } = useStitchAuth();
   const [time, setTime] = useState();
-  const [hasClockedIn, setHasClockedIn] = useState(false);
+  // const [hasClockedIn, setHasClockedIn] = useState(false);
   const [lastRecordId, setLastRecordId] = useState();
   // const [reportToShow, setReportToShow] = useState('daily');
   const { records, dailyTotal, actions } = useTimeClockRecords('daily', startDate, endDate, currentUser.id);
@@ -22,7 +20,7 @@ export default function Dashboard({ currentUser, startDate, endDate }) {
       const lastRecord = await getLastRecord(currentUser.id);
 
       if (lastRecord && !lastRecord.timeOut) {
-        setHasClockedIn(true);
+        // setHasClockedIn(true);
         setTime(lastRecord.timeIn);
         setLastRecordId(lastRecord._id);
       }
@@ -44,7 +42,7 @@ export default function Dashboard({ currentUser, startDate, endDate }) {
     findLastRecord();
   }, [currentUser]);
 
-  function handleClockIn() {
+  function handleClockIn(e) {
     const newRecord = {
       /* owner_id: currentUser.id,
       owner_name: currentUser.profile.name, */
@@ -67,10 +65,11 @@ export default function Dashboard({ currentUser, startDate, endDate }) {
       .catch(err => console.error(`Failed to insert item: ${err}`)); */
   }
 
-  function handleClockOut() {
+  function handleClockOut(e) {
     actions.editRecord({ _id: lastRecordId, timeIn: time, timeOut: new Date() }).then(res => {
       setHasClockedIn(false);
       setTime(null);
+      setUnclockedHours(0);
     });
 
     /* const query = { _id: lastRecordId };
@@ -101,10 +100,10 @@ export default function Dashboard({ currentUser, startDate, endDate }) {
       <Row className="justify-content-center mb-2">
         <Col lg="4" md="6">
           {!hasClockedIn ? (
-            <Button color="primary" className="btn-block" onClick={handleClockIn}>Clock In</Button>
+            <Button color="primary" className="btn-block" onMouseUp={handleClockIn}>Clock In</Button>
           ) : (
               <>
-                <Button color="primary" className="btn-block" onClick={handleClockOut}>Clock Out</Button>
+                <Button color="primary" className="btn-block" onMouseUp={handleClockOut}>Clock Out</Button>
                 <div className="mt-3 text-center">
                   {time ? (
                     `Clocked in at ${dayjs(time).format('h:mm A M/D/YY')}`
@@ -116,7 +115,7 @@ export default function Dashboard({ currentUser, startDate, endDate }) {
       </Row>
       <Row>
         <Col>
-          <EmbeddedDailyReport currentUser={currentUser} records={records} dailyTotal={dailyTotal} />
+          <EmbeddedDailyReport currentUser={currentUser} records={records} dailyTotal={dailyTotal} hasClockedIn={hasClockedIn} unclockedHours={unclockedHours} />
           <UserProfile userId={currentUser.id} />
         </Col>
       </Row>

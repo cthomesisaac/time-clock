@@ -18,10 +18,16 @@ const recordReducer = (state, { type, payload }) => {
         records: payload.timeRecords || []
       };
     }
+    case 'setFirstRecord': {
+      return {
+        ...state,
+        firstRecord: payload.firstRecord || []
+      };
+    }
     case 'setDailyTotal': {
       return {
         ...state,
-        dailyTotal: payload.dailyTotal || ''
+        dailyTotal: payload.dailyTotal || 0
       };
     }
     case 'setUser': {
@@ -60,7 +66,7 @@ const recordReducer = (state, { type, payload }) => {
 }
 
 export function useTimeClockRecords(reportType, startDate, endDate, userId = null) {
-  const [state, dispatch] = useReducer(recordReducer, { records: [], dailyTotal: '', user: {} });
+  const [state, dispatch] = useReducer(recordReducer, { records: [], firstRecord: [], dailyTotal: '', user: {} });
 
   /* async function getRecords() {
     const timeRecords = await records.find({}, { limit: 500 }).asArray();
@@ -150,7 +156,8 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
       }
       case 'user': {
         getUserReport(startDate, endDate, userId).then(timeRecords => {
-          dispatch({ type: 'setRecords', payload: { timeRecords } });
+          dispatch({ type: 'setRecords', payload: { timeRecords: timeRecords.slice(1) } });
+          dispatch({ type: 'setFirstRecord', payload: { firstRecord: [timeRecords[0]] } });
         });
         getUser(userId).then(user => {
           dispatch({ type: 'setUser', payload: { user } });
@@ -177,6 +184,7 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
 
   return {
     records: state.records,
+    firstRecord: state.firstRecord,
     dailyTotal: state.dailyTotal,
     user: state.user,
     actions: {

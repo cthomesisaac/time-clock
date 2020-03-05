@@ -60,7 +60,7 @@ export default function DailyReport() {
           ))}
         </tbody>
       </Table>
-      <div className="ml-3">Total: {dailyTotal}</div>
+      <div className="ml-3">Total: {parseFloat(dailyTotal).toFixed(1)}</div>
     </>
   );
 }

@@ -1,18 +1,17 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import DatePicker from 'react-datepicker';
 import { Table, Breadcrumb, BreadcrumbItem, ButtonGroup, Button, Container, Row, Col } from 'reactstrap';
 
 import { useTimeClockRecords } from '../useTimeClockRecords';
 import BankedHours from './BankedHours';
-import DailyTotal from './DailyTotal';
 
-export default function UserReport({ currentUser, startDate, setStartDate, endDate }) {
+export default function UserReport({ currentUser, startDate, setStartDate, endDate, unclockedHours }) {
   // const { id } = useParams();
   /* const [startDate, setStartDate] = useState(dayjs().subtract(30, 'd').toDate());
   const [endDate] = useState(new Date()); */
-  const { records } = useTimeClockRecords('user', startDate, endDate, currentUser.id);
+  const { records, firstRecord } = useTimeClockRecords('user', startDate, endDate, currentUser.id);
 
   return (
     <Container>
@@ -64,6 +63,16 @@ export default function UserReport({ currentUser, startDate, setStartDate, endDa
               </tr>
             </thead>
             <tbody>
+              {firstRecord.map(record => (
+                <tr key={record._id}>
+                  <td>
+                    <Link to={`/dashboard/daily/${record.rawDate.valueOf()}`}>
+                      {record._id}
+                    </Link>
+                  </td>
+                  <td>{(record.hoursForDay + unclockedHours).toFixed(1)}</td>
+                </tr>
+              ))}
               {records.map(record => (
                 <tr key={record._id}>
                   <td>
@@ -79,7 +88,7 @@ export default function UserReport({ currentUser, startDate, setStartDate, endDa
                       altValue={record.hoursForDay}
                     />
                   </td> */}
-                  <td>{record.hoursForDay}</td>
+                  <td>{record.hoursForDay.toFixed(1)}</td>
                 </tr>
               ))}
             </tbody>

@@ -71,6 +71,7 @@ export default function WeeklyReport({ startDate, setStartDate, endDate, setEndD
           <tr>
             <th>Name</th>
             <th>Total Hours</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -83,6 +84,9 @@ export default function WeeklyReport({ startDate, setStartDate, endDate, setEndD
               </td>
               <td>
                 <WeeklyTotal startDate={startDate} endDate={endDate} userId={record.user_id} />
+              </td>
+              <td>
+                {record.hasClockedIn ? 'Clocked In' : 'Clocked Out'}
               </td>
             </tr>
           ))}

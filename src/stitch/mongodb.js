@@ -9,6 +9,16 @@ export const users = mongoClient.db('time-clock').collection('users');
 
 export async function getWeeklyReport() {
   const report = await users.find().toArray();
+
+  for (const user of report) {
+    const lastRecord = await getLastRecord(user.user_id);
+    if (!lastRecord.timeOut) {
+      user.hasClockedIn = true;
+    } else {
+      user.hasClockedIn = false;
+    }
+  }
+  
   return report;
 }
 
@@ -102,7 +112,7 @@ export async function getUserReport(startDate, endDate, userId) {
   const report = await records.aggregate(pipeline).toArray();
 
   report.forEach(record => {
-    record.hoursForDay = (record.hoursForDay / 3600000).toFixed(1);
+    record.hoursForDay = record.hoursForDay / 3600000;
   });
 
   return report;
@@ -151,7 +161,8 @@ export async function getDailyTotal(startDate, endDate, userId) {
   ];
 
   const aggregate = await records.aggregate(pipeline).first();
-  const dailyTotal = aggregate ? (aggregate.dailyTotal / 3600000).toFixed(1) : null;
+  // const dailyTotal = aggregate ? aggregate.dailyTotal / 3600000 : 0;
+  const dailyTotal = aggregate.dailyTotal / 3600000;
 
   return dailyTotal;
 }

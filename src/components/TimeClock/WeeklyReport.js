@@ -4,10 +4,9 @@ import dayjs from 'dayjs';
 import DatePicker from 'react-datepicker';
 import { Table, Breadcrumb, BreadcrumbItem, ButtonGroup, Button, Container, Row, Col } from 'reactstrap';
 
-import { useTimeClockRecords } from '../useTimeClockRecords';
 import WeeklyTotal from './WeeklyTotal';
 
-export default function WeeklyReport({ currentUser, startDate, setStartDate, endDate, setEndDate }) {
+export default function WeeklyReport({ currentUser, startDate, setStartDate, endDate, setEndDate, unclockedHours }) {
   /* const [startDate, setStartDate] = useState(dayjs().day(1).toDate());
   const [endDate, setEndDate] = useState(dayjs().day(6).toDate()); */
   // const { records } = useTimeClockRecords('weekly', startDate, endDate);
@@ -83,7 +82,7 @@ export default function WeeklyReport({ currentUser, startDate, setStartDate, end
                   </Link>
                 </td>
                 <td>
-                  <WeeklyTotal startDate={startDate} endDate={endDate} userId={currentUser.id} />
+                  <WeeklyTotal startDate={startDate} endDate={endDate} userId={currentUser.id} unclockedHours={unclockedHours} />
                 </td>
               </tr>
             </tbody>

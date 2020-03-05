@@ -4,14 +4,14 @@ import dayjs from 'dayjs';
 import { Table, Container, Row, Col, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
 import { useTimeClockRecords } from '../useTimeClockRecords';
-import DailyTotal from './DailyTotal';
 
-export default function DailyReport({ currentUser, date = dayjs().startOf('day') }) {
+export default function DailyReport({ currentUser, date = dayjs().startOf('day'), unclockedHours }) {
   const { dateFromParams } = useParams();
   if (dateFromParams) date = dayjs(parseInt(dateFromParams)).startOf('day');
   const [startDate] = useState(date.startOf('day').toDate());
   const [endDate] = useState(date.startOf('day').add(24, 'hour').toDate());
   const { records, dailyTotal } = useTimeClockRecords('daily', startDate, endDate, currentUser.id);
+  const isToday = dayjs().isSame(dayjs(startDate), 'd') ? true : false;
 
   return (
     <Container>
@@ -50,8 +50,8 @@ export default function DailyReport({ currentUser, date = dayjs().startOf('day')
                 </tbody>
               </Table>
               <div className="ml-3">
-                {/* Total Hours: <DailyTotal startDate={startDate} endDate={endDate} currentUser={currentUser} altValue={dailyTotal} /> */}
-                Total Hours: {dailyTotal}
+                {/* Total Hours: <DailyTotal dailyTotal={dailyTotal} hasClockedIn={hasClockedIn} records={records} /> */}
+                Total Hours for Day: {isToday ? parseFloat(dailyTotal + unclockedHours).toFixed(1) : parseFloat(dailyTotal).toFixed(1)}
               </div>
             </>
           ) : (
