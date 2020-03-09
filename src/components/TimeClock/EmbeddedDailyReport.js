@@ -58,7 +58,7 @@ export default function EmbeddedDailyReport({ currentUser, records, dailyTotal, 
               <div className="ml-3">
                 {/* Total Hours: <DailyTotal dailyTotal={dailyTotal} hasClockedIn={hasClockedIn} records={records} /> */}
                 {/* Total Hours for Today: {parseFloat(dailyTotal + unclockedHours).toFixed(1)} */}
-                Total Time for Today: {`${hours} hours ${minutes} minutes`}
+                {hours === 1 ? `Total Time for Today: ${hours} hour ${minutes} minutes` : `Total Time for Today: ${hours} hours ${minutes} minutes`}
               </div>
             </>
           ) : (
