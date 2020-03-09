@@ -8,8 +8,14 @@ export default function EmbeddedDailyReport({ currentUser, records, dailyTotal, 
   const { dateFromParams } = useParams();
   if (dateFromParams) date = dayjs(parseInt(dateFromParams)).startOf('day');
   const [startDate] = useState(date.startOf('day').toDate());
-  const hours = Math.floor(moment.duration(dailyTotal + unclockedHours, 'h').asHours()) % moment.duration(dailyTotal + unclockedHours, 'h').asHours();
-  const minutes = moment.duration(moment.duration(dailyTotal + unclockedHours, 'h').asHours() % Math.floor(moment.duration(dailyTotal + unclockedHours, 'h').asHours()), 'h').asMinutes().toFixed(0);
+  const hours = Math.floor(moment.duration(dailyTotal + unclockedHours, 'h').asHours());
+  let minutes;
+  if (moment.duration(dailyTotal + unclockedHours, 'h').asHours() < 1) {
+    minutes = moment.duration(dailyTotal + unclockedHours, 'h').asMinutes().toFixed(0);
+  } else {
+    minutes = moment.duration(moment.duration(dailyTotal + unclockedHours, 'h').asHours() % Math.floor(moment.duration(dailyTotal + unclockedHours, 'h').asHours()), 'h').asMinutes().toFixed(0);
+  }
+  // const minutes = moment.duration(moment.duration(dailyTotal + unclockedHours, 'h').asHours() % Math.floor(moment.duration(dailyTotal + unclockedHours, 'h').asHours()), 'h').asMinutes().toFixed(0);
   // const [endDate] = useState(date.startOf('day').add(24, 'hour').toDate());
   // const { records, dailyTotal } = useTimeClockRecords('daily', startDate, endDate, currentUser.id);
 
