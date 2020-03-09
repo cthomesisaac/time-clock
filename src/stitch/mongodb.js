@@ -169,6 +169,7 @@ export async function getDailyTotal(startDate, endDate, userId) {
 
 export async function getUser(userId) {
   const user = await users.findOne({ user_id: userId });
+  user.bankedHours = parseFloat(user.bankedHours.toFixed(1));
   return user;
 }
 

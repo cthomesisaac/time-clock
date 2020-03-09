@@ -32,8 +32,8 @@ function BankedHoursEdit({ user, toggleEditing, editUser }) {
 
   async function onSubmit(event) {
     event.preventDefault();
-    if (parseInt(input) !== user.bankedHours) {
-      await editUser(user.user_id, parseInt(input));
+    if (parseFloat(input) !== user.bankedHours) {
+      await editUser(user.user_id, parseFloat(input));
       toggleEditing();
     } else {
       toggleEditing();

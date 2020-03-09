@@ -8,7 +8,7 @@ import { useTimeClockRecords } from '../useTimeClockRecords';
 import BankedHours from './BankedHours';
 import AddModal from './AddModal';
 
-export default function UserReport({ startDate, setStartDate, endDate }) {
+export default function UserReport({ startDate, setStartDate, endDate, setEndDate }) {
   const { id } = useParams();
   /* const [startDate, setStartDate] = useState(dayjs().subtract(30, 'd').toDate());
   const [endDate] = useState(new Date()); */
@@ -35,13 +35,13 @@ export default function UserReport({ startDate, setStartDate, endDate }) {
             Start Date:
           </span>
           <span className="mr-3">
-            <DatePicker selected={startDate} />
+            <DatePicker selected={startDate} onChange={date => setStartDate(startDate => ({ ...startDate, user: date }))} />
           </span>
           <span className="mr-1">
             End Date:
           </span>
           <span>
-            <DatePicker selected={endDate} />
+            <DatePicker selected={endDate} onChange={date => setEndDate(endDate => ({ ...endDate, user: date }))} />
           </span>
         </div>
         <ButtonGroup className="mx-auto d-block mb-1" style={{ width: 'fit-content' }}>
