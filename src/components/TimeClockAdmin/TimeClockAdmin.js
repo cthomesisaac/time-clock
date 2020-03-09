@@ -6,6 +6,7 @@ import { Row, Col, Container } from 'reactstrap';
 import WeeklyReport from './WeeklyReport';
 import UserReport from './UserReport';
 import DailyReport from './DailyReport';
+import { useEffect } from 'react';
 
 export default function TimeClockAdmin() {
   const [startDate, setStartDate] = useState({
@@ -16,6 +17,10 @@ export default function TimeClockAdmin() {
     weekly: dayjs().day(6).endOf('day').toDate(),
     user: dayjs().endOf('day').toDate()
   });
+
+  useEffect(() => {
+    document.title = 'CT Homes—Time Clock Admin'
+  })
   
   return (
     <Container>

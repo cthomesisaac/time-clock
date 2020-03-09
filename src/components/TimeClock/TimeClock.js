@@ -51,6 +51,7 @@ export default function TimeClock() {
       }
     } */
 
+    document.title = 'CT Homes—Time Clock';
     findLastRecord();
   }, [currentUser]);
 
