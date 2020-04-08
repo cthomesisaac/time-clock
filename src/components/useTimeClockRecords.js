@@ -135,6 +135,25 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
     }
   }
 
+  async function addHolidayRecords(date) {
+    const usersList = await users.find().toArray();
+    let newRecords = [];
+
+    for (const user of usersList) {
+      const newRecord = {
+        owner_id: user.user_id,
+        owner_name: user.name,
+        timeIn: new Date(date.setHours(8, 0, 0, 0)),
+        timeOut: new Date(date.setHours(16, 0, 0, 0))
+      };
+
+      newRecords.push(newRecord);
+    }
+
+    // console.dir(newRecords);
+    await records.insertMany(newRecords);
+  }
+
   async function editUser(userId, newBankedHours) {
     await users.updateOne({ user_id: userId }, { $set: { bankedHours: newBankedHours } });
     dispatch({ type: 'setUser', payload: { user: { ...state.user, bankedHours: newBankedHours } } });
@@ -192,7 +211,8 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
       deleteRecord,
       addRecordFromDaily,
       addRecordFromUser,
-      editUser
+      editUser,
+      addHolidayRecords
     }
   };
 }

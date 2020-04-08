@@ -6,11 +6,12 @@ import { Table, Breadcrumb, BreadcrumbItem, ButtonGroup, Button } from 'reactstr
 
 import { useTimeClockRecords } from '../useTimeClockRecords';
 import WeeklyTotal from './WeeklyTotal';
+import AddModal from './AddHolidayModal';
 
 export default function WeeklyReport({ startDate, setStartDate, endDate, setEndDate }) {
   /* const [startDate, setStartDate] = useState(dayjs().day(1).toDate());
   const [endDate, setEndDate] = useState(dayjs().day(6).toDate()); */
-  const { records } = useTimeClockRecords('weekly', startDate, endDate);
+  const { records, actions } = useTimeClockRecords('weekly', startDate, endDate);
 
   return (
     <>
@@ -66,6 +67,9 @@ export default function WeeklyReport({ startDate, setStartDate, endDate, setEndD
           4 weeks ago
         </Button>
       </ButtonGroup>
+      <div>
+        <AddModal date={new Date().valueOf()} addRecord={actions.addHolidayRecords} />
+      </div>
       <Table>
         <thead>
           <tr>
