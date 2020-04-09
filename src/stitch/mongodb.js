@@ -161,8 +161,8 @@ export async function getDailyTotal(startDate, endDate, userId) {
   ];
 
   const aggregate = await records.aggregate(pipeline).first();
-  // const dailyTotal = aggregate ? aggregate.dailyTotal / 3600000 : 0;
-  const dailyTotal = aggregate.dailyTotal / 3600000;
+  const dailyTotal = aggregate ? aggregate.dailyTotal / 3600000 : 0;
+  // const dailyTotal = aggregate.dailyTotal / 3600000;
 
   return dailyTotal;
 }
