@@ -15,7 +15,7 @@ export default function HoursForDay({ date, userId }) {
     };
 
     getTotalHours();
-  }, []);
+  }, [date, userId]);
 
   // useEffect(() => {
   //   async function getHours(date, userId) {

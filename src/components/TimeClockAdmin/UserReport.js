@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import moment from 'moment';
@@ -14,7 +14,7 @@ export default function UserReport({ startDate, setStartDate, endDate, setEndDat
   const { id } = useParams();
   /* const [startDate, setStartDate] = useState(dayjs().subtract(30, 'd').toDate());
   const [endDate] = useState(new Date()); */
-  const { records, firstRecord, user, actions } = useTimeClockRecords('user', startDate, endDate, id);
+  const { user, actions } = useTimeClockRecords('user', startDate, endDate, id);
 
   function getDates(startDate, stopDate) {
     var dateArray = [];
