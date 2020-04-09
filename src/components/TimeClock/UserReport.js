@@ -1,17 +1,37 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import { Table, Breadcrumb, BreadcrumbItem, ButtonGroup, Button, Container, Row, Col } from 'reactstrap';
 
-import { useTimeClockRecords } from '../useTimeClockRecords';
+// import { useTimeClockRecords } from '../useTimeClockRecords';
 import BankedHours from './BankedHours';
+import HoursForDay from './HoursForDay';
 
 export default function UserReport({ currentUser, startDate, setStartDate, endDate, unclockedHours }) {
   // const { id } = useParams();
   /* const [startDate, setStartDate] = useState(dayjs().subtract(30, 'd').toDate());
   const [endDate] = useState(new Date()); */
-  const { records, firstRecord } = useTimeClockRecords('user', startDate, endDate, currentUser.id);
+  // const { records, firstRecord } = useTimeClockRecords('user', startDate, endDate, currentUser.id);
+
+  function getDates(startDate, stopDate) {
+    var dateArray = [];
+    var currentDate = moment(startDate);
+    stopDate = moment(stopDate);
+
+    while (currentDate <= stopDate) {
+      dateArray.push({
+        string: moment(currentDate).format('MM/DD/YYYY'),
+        date: moment(currentDate).toDate().valueOf()
+      });
+      currentDate = moment(currentDate).add(1, 'd');
+    }
+
+    return dateArray.sort((a, b) => a < b ? 1 : -1);
+  }
+
+  const dates = getDates(startDate, endDate);
 
   return (
     <Container>
@@ -63,7 +83,20 @@ export default function UserReport({ currentUser, startDate, setStartDate, endDa
               </tr>
             </thead>
             <tbody>
-              {firstRecord.map(record => (
+              {dates.map((date, index) => (
+                <tr key={date.date}>
+                  <td>
+                    <Link to={`/dashboard/daily/${date.date}`}>
+                      {date.string}
+                    </Link>
+                  </td>
+                  <td>
+                    {index === 0 && <HoursForDay date={date.date} userId={currentUser.id} unclockedHours={unclockedHours} />}
+                    {index !== 0 && <HoursForDay date={date.date} userId={currentUser.id} unclockedHours={0} />}
+                  </td>
+                </tr>
+              ))}
+              {/* {firstRecord.map(record => (
                 <tr key={record._id}>
                   <td>
                     <Link to={`/dashboard/daily/${record.rawDate.valueOf()}`}>
@@ -80,17 +113,9 @@ export default function UserReport({ currentUser, startDate, setStartDate, endDa
                       {record._id}
                     </Link>
                   </td>
-                  {/* <td>
-                    <DailyTotal
-                      startDate={dayjs(record.rawDate).startOf('day').toDate()}
-                      endDate={dayjs(record.rawDate).startOf('day').add(24, 'h').toDate()}
-                      currentUser={currentUser}
-                      altValue={record.hoursForDay}
-                    />
-                  </td> */}
                   <td>{record.hoursForDay.toFixed(1)}</td>
                 </tr>
-              ))}
+              ))} */}
             </tbody>
           </Table>
         </Col>
