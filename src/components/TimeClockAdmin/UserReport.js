@@ -1,18 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import { Table, Breadcrumb, BreadcrumbItem, ButtonGroup, Button, Row, Col } from 'reactstrap';
 
 import { useTimeClockRecords } from '../useTimeClockRecords';
 import BankedHours from './BankedHours';
 import AddModal from './AddModal';
+import HoursForDay from './HoursForDay';
 
 export default function UserReport({ startDate, setStartDate, endDate, setEndDate }) {
   const { id } = useParams();
   /* const [startDate, setStartDate] = useState(dayjs().subtract(30, 'd').toDate());
   const [endDate] = useState(new Date()); */
   const { records, firstRecord, user, actions } = useTimeClockRecords('user', startDate, endDate, id);
+
+  function getDates(startDate, stopDate) {
+    var dateArray = [];
+    var currentDate = moment(startDate);
+    stopDate = moment(stopDate);
+
+    while (currentDate <= stopDate) {
+      dateArray.push({
+        string: moment(currentDate).format('MM/DD/YYYY'),
+        date: moment(currentDate).toDate().valueOf()
+      });
+      currentDate = moment(currentDate).add(1, 'd');
+    }
+
+    return dateArray.sort((a, b) => a < b ? 1 : -1);
+  }
+
+  const dates = getDates(startDate, endDate);
 
   return (
     <Row>
@@ -66,6 +86,20 @@ export default function UserReport({ startDate, setStartDate, endDate, setEndDat
             </tr>
           </thead>
           <tbody>
+            {dates.map(date => (
+              <tr key={date.date}>
+                <td>
+                  <Link to={`/admin/user/${id}/${date.date}`}>
+                    {date.string}
+                  </Link>
+                </td>
+                <td>
+                  <HoursForDay date={date.date} userId={id} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          {/* <tbody>
             {firstRecord.map(record => (
               <tr key={record._id}>
                 <td>
@@ -86,7 +120,7 @@ export default function UserReport({ startDate, setStartDate, endDate, setEndDat
                 <td>{record.hoursForDay.toFixed(1)}</td>
               </tr>
             ))}
-          </tbody>
+          </tbody> */}
         </Table>
       </Col>
     </Row>

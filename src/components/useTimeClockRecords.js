@@ -175,7 +175,8 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
       }
       case 'user': {
         getUserReport(startDate, endDate, userId).then(timeRecords => {
-          dispatch({ type: 'setRecords', payload: { timeRecords: timeRecords.slice(1) } });
+          // dispatch({ type: 'setRecords', payload: { timeRecords: timeRecords.slice(1) } });
+          dispatch({ type: 'setRecords', payload: { timeRecords: timeRecords } });
           dispatch({ type: 'setFirstRecord', payload: { firstRecord: [timeRecords[0]] } });
         });
         getUser(userId).then(user => {
