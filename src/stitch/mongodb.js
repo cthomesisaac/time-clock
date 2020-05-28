@@ -175,7 +175,7 @@ export async function getUser(userId) {
 
 export async function getLastRecord(userId) {
   const query = { owner_id: userId };
-  const options = { sort: { _id: -1 } };
+  const options = { sort: { timeIn: -1 } };
 
   return await records.findOne(query, options);
 }
