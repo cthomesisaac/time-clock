@@ -19,7 +19,7 @@ export default function AddHolidayForm({ date, addRecord, toggle }) {
     <Form onSubmit={onSubmit}>
       <FormGroup>
         <div>Holiday Date</div>
-        <DatePicker selected={date} onChange={onChange} />
+        <DatePicker selected={holidayDate} onChange={v => onChange(v)} />
       </FormGroup>
       <Button type="submit">Save</Button>
     </Form>
