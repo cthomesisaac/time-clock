@@ -144,7 +144,8 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
         owner_id: user.user_id,
         owner_name: user.name,
         timeIn: new Date(date.setHours(8, 0, 0, 0)),
-        timeOut: new Date(date.setHours(16, 0, 0, 0))
+        timeOut: new Date(date.setHours(16, 0, 0, 0)),
+        isHoliday: true
       };
 
       newRecords.push(newRecord);
