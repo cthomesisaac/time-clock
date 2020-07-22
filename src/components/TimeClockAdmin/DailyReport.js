@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import moment from 'moment';
 import { Breadcrumb, BreadcrumbItem, Table, Button } from 'reactstrap';
 
 import { useTimeClockRecords } from '../useTimeClockRecords';
@@ -31,7 +32,7 @@ export default function DailyReport() {
         <BreadcrumbItem active>Daily Report</BreadcrumbItem>
       </Breadcrumb>
       <h3 className="mx-3">
-        <span>{dayjs(startDate).format('dddd, MMMM D, YYYY')}</span>
+        <span>{moment(parseInt(date)).format('dddd, MMMM D, YYYY')}</span>
       </h3>
       <div className="mx-3 mb-2 d-flex justify-content-between">
         <h5 className="pt-2 m-0">
