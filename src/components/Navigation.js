@@ -7,6 +7,8 @@ import {
   Nav
 } from 'reactstrap';
 
+import Notifications from './Notifications';
+
 export default function Navigation({ isLoggedIn, userRole, handleLogout }) {
   if (isLoggedIn) {
     if (userRole.role === 'admin') {
@@ -63,6 +65,9 @@ function AdminNav({ handleLogout }) {
         </NavItem>
         <NavItem>
           <NavLink tag={Link} to="/admin">Admin</NavLink>
+        </NavItem>
+        <NavItem>
+          <Notifications />
         </NavItem>
       </Nav>
       <Button onClick={handleLogout}>Log Out</Button>
