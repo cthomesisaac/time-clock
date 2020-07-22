@@ -6,6 +6,7 @@ const mongoClient = app.getServiceClient(RemoteMongoClient.factory, 'mongodb-atl
 
 export const records = mongoClient.db('time-clock').collection('records');
 export const users = mongoClient.db('time-clock').collection('users');
+export const notifications = mongoClient.db('time-clock').collection('notifications');
 
 export async function getWeeklyReport() {
   const report = await users.find().toArray();
@@ -178,4 +179,8 @@ export async function getLastRecord(userId) {
   const options = { sort: { timeIn: -1 } };
 
   return await records.findOne(query, options);
+}
+
+export async function getNotifications() {
+  return await notifications.find({ type: { $exists: true } }).toArray();
 }
