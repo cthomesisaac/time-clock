@@ -13,7 +13,7 @@ export async function getWeeklyReport() {
 
   for (const user of report) {
     const lastRecord = await getLastRecord(user.user_id);
-    if (!lastRecord.timeOut) {
+    if (lastRecord && !lastRecord.timeOut) {
       user.hasClockedIn = true;
     } else {
       user.hasClockedIn = false;
@@ -178,8 +178,7 @@ export async function getLastRecord(userId) {
   const query = { owner_id: userId, isHoliday: null };
   const options = { sort: { timeIn: -1 } };
 
-  const lastRecord = await records.findOne(query, options);
-  return !lastRecord ? { timeIn: null, timeOut: null } : lastRecord;
+  return await records.findOne(query, options);
 }
 
 export async function getNotifications() {
