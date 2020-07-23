@@ -182,5 +182,5 @@ export async function getLastRecord(userId) {
 }
 
 export async function getNotifications() {
-  return await notifications.find({ type: { $exists: true } }).toArray();
+  return await notifications.find({ type: { $exists: true } }, { sort: { date: -1 } }).toArray();
 }
