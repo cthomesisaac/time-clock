@@ -178,7 +178,8 @@ export async function getLastRecord(userId) {
   const query = { owner_id: userId, isHoliday: null };
   const options = { sort: { timeIn: -1 } };
 
-  return await records.findOne(query, options);
+  const lastRecord = await records.findOne(query, options);
+  return !lastRecord ? { timeIn: null, timeOut: null } : lastRecord;
 }
 
 export async function getNotifications() {
