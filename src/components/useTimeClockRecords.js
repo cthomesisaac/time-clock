@@ -1,4 +1,5 @@
 import { useReducer, useEffect } from 'react';
+import moment from 'moment';
 
 import {
   records,
@@ -155,6 +156,13 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
     await records.insertMany(newRecords);
   }
 
+  async function addLunchTime(recordsArray) {
+    const origRecord = recordsArray[0];
+    const origTimeOut = origRecord.timeOut;
+    await editRecord({ ...origRecord, timeOut: moment(origTimeOut).startOf('day').hour(11).minute(30).toDate() });
+    await addRecordFromDaily({ timeIn: moment(origTimeOut).startOf('day').hours(12).toDate(), timeOut: origTimeOut });
+  }
+
   async function editUser(userId, newBankedHours) {
     await users.updateOne({ user_id: userId }, { $set: { bankedHours: newBankedHours } });
     dispatch({ type: 'setUser', payload: { user: { ...state.user, bankedHours: newBankedHours } } });
@@ -214,7 +222,8 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
       addRecordFromDaily,
       addRecordFromUser,
       editUser,
-      addHolidayRecords
+      addHolidayRecords,
+      addLunchTime
     }
   };
 }
