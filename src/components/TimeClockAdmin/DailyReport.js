@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import moment from 'moment';
@@ -10,8 +10,8 @@ import AddModal from './AddModal';
 
 export default function DailyReport() {
   const { id, date } = useParams();
-  const [startDate] = useState(dayjs(parseInt(date)).startOf('day').toDate());
-  const [endDate] = useState(dayjs(parseInt(date)).startOf('day').add(24, 'hour').toDate());
+  const startDate = useMemo(() => dayjs(parseInt(date)).startOf('day').toDate(), [date]);
+  const endDate = useMemo(() => dayjs(parseInt(date)).startOf('day').add(24, 'hour').toDate(), [date]);
   const { records, dailyTotal, actions, user } = useTimeClockRecords('daily', startDate, endDate, id);
 
   function onClick(recordId) {
