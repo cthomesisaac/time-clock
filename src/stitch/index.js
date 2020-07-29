@@ -1,5 +1,5 @@
 import { app } from './app';
-import { users, records } from './mongodb';
+import { users, records, notifications } from './mongodb';
 import {
   getWeeklyReport,
   getWeeklyTotal,
@@ -17,6 +17,6 @@ import {
     getCurrentUser
 } from './authentication';
 
-export { app, users, records };
+export { app, users, records, notifications };
 export { getWeeklyReport, getWeeklyTotal, getUserReport, getDailyReport, getDailyTotal, getUser, getLastRecord, getNotifications };
 export { loginAnonymous, logoutCurrentUser, hasLoggedInUser, getCurrentUser };
