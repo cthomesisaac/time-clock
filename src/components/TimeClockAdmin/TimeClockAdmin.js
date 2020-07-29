@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Row, Col, Container } from 'reactstrap';
@@ -6,7 +6,7 @@ import { Row, Col, Container } from 'reactstrap';
 import WeeklyReport from './WeeklyReport';
 import UserReport from './UserReport';
 import DailyReport from './DailyReport';
-import { useEffect } from 'react';
+import Notifications from '../Notifications';
 
 export default function TimeClockAdmin() {
   const [startDate, setStartDate] = useState({
@@ -35,6 +35,9 @@ export default function TimeClockAdmin() {
         </Route>
         <Route path="/admin/user/:id">
           <UserReport startDate={startDate.user} setStartDate={setStartDate} endDate={endDate.user} setEndDate={setEndDate} />
+        </Route>
+        <Route path="/admin/notifications">
+          <Notifications />
         </Route>
         <Route exact path="/admin">
           <WeeklyReport startDate={startDate.weekly} setStartDate={setStartDate} endDate={endDate.weekly} setEndDate={setEndDate} />
