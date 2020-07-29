@@ -8,7 +8,8 @@ import {
   getDailyReport,
   getDailyTotal,
   getUser,
-  users
+  users,
+  getNotifications
 } from '../stitch';
 
 const recordReducer = (state, { type, payload }) => {
@@ -17,6 +18,12 @@ const recordReducer = (state, { type, payload }) => {
       return {
         ...state,
         records: payload.timeRecords || []
+      };
+    }
+    case 'setNotifs': {
+      return {
+        ...state,
+        notifications: payload.notifs || []
       };
     }
     case 'setFirstRecord': {
@@ -52,13 +59,13 @@ const recordReducer = (state, { type, payload }) => {
       return {
         ...state,
         records: state.records.filter(record => !record._id.equals(payload))
-      }
+      };
     }
     case 'addRecord': {
       return {
         ...state,
         records: [payload, ...state.records].sort((a, b) => b.timeIn - a.timeIn)
-      }
+      };
     }
     default: {
       console.log(`Received invalid action type: ${type}`);
@@ -67,7 +74,13 @@ const recordReducer = (state, { type, payload }) => {
 }
 
 export function useTimeClockRecords(reportType, startDate, endDate, userId = null) {
-  const [state, dispatch] = useReducer(recordReducer, { records: [], firstRecord: [], dailyTotal: '', user: {} });
+  const [state, dispatch] = useReducer(recordReducer, {
+    records: [],
+    notifications: [],
+    firstRecord: [],
+    dailyTotal: '',
+    user: {}
+  });
 
   /* async function getRecords() {
     const timeRecords = await records.find({}, { limit: 500 }).asArray();
@@ -99,7 +112,7 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
     getDailyTotal(startDate, endDate, userId).then(dailyTotal => {
       dispatch({ type: 'setDailyTotal', payload: { dailyTotal } });
     });
-    
+
     /* if (deletedCount > 0) {
       dispatch({ type: 'deleteRecord', payload: id });
     } else {
@@ -205,6 +218,12 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
         });
         break;
       }
+      case 'notifs': {
+        getNotifications().then(notifs => {
+          dispatch({ type: 'setNotifs', payload: { notifs } });
+        });
+        break;
+      }
       default: {
         console.error(`Unknown reportType: ${reportType}`);
       }
@@ -213,6 +232,7 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
 
   return {
     records: state.records,
+    notifications: state.notifications,
     firstRecord: state.firstRecord,
     dailyTotal: state.dailyTotal,
     user: state.user,
