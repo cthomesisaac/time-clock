@@ -9,6 +9,7 @@ import {
   getDailyTotal,
   getUser,
   users,
+  notifications,
   getNotifications
 } from '../stitch';
 
@@ -67,6 +68,16 @@ const recordReducer = (state, { type, payload }) => {
         records: [payload, ...state.records].sort((a, b) => b.timeIn - a.timeIn)
       };
     }
+    case 'toggleNotifRead': {
+      const updateRead = notif => {
+        const isThisNotif = notif._id === payload.id;
+        return isThisNotif ? { ...notif, read: !notif.read || true } : notif;
+      };
+      return {
+        ...state,
+        notifications: state.notifications.map(updateRead)
+      };
+    }
     default: {
       console.log(`Received invalid action type: ${type}`);
     }
@@ -105,7 +116,16 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
       return true;
     }
   };
-
+  
+  async function toggleNotifRead(notifId) {
+    const notif = state.notifications.find(n => n._id === notifId);
+    await notifications.updateOne(
+      { _id: notifId },
+      { $set: { read: !notif.read || true } }
+    );
+    dispatch({ type: 'toggleNotifRead', payload: { id: notifId } });
+  }
+  
   async function deleteRecord(id) {
     await records.deleteOne({ _id: id });
     dispatch({ type: 'deleteRecord', payload: id });
@@ -243,7 +263,8 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
       addRecordFromUser,
       editUser,
       addHolidayRecords,
-      addLunchTime
+      addLunchTime,
+      toggleNotifRead
     }
   };
 }
