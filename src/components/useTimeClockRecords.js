@@ -71,7 +71,7 @@ const recordReducer = (state, { type, payload }) => {
     case 'toggleNotifRead': {
       const updateRead = notif => {
         const isThisNotif = notif._id === payload.id;
-        return isThisNotif ? { ...notif, read: !notif.read || true } : notif;
+        return isThisNotif ? { ...notif, read: !notif.read } : notif;
       };
       return {
         ...state,
@@ -121,7 +121,7 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
     const notif = state.notifications.find(n => n._id === notifId);
     await notifications.updateOne(
       { _id: notifId },
-      { $set: { read: !notif.read || true } }
+      { $set: { read: !notif.read } }
     );
     dispatch({ type: 'toggleNotifRead', payload: { id: notifId } });
   }
