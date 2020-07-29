@@ -8,7 +8,7 @@ import {
 import { useTimeClockRecords } from './useTimeClockRecords';
 
 export default function Notifications() {
-  const { notifications } = useTimeClockRecords('notifs');
+  const { notifications, actions: { toggleNotifRead } } = useTimeClockRecords('notifs');
 
   return (
     <Table>
@@ -30,7 +30,13 @@ export default function Notifications() {
               <td className="align-middle">{notification.prettyDate}</td>
               <td>
                 <Button tag={Link} to={`/admin/user/${notification.user_id}/${notification.date.valueOf()}`}>View</Button>
-                <Button color="danger" className="ml-1">X</Button>
+                <Button
+                  color="danger"
+                  className="ml-1"
+                  onClick={() => toggleNotifRead(notification._id)}
+                >
+                  X
+                </Button>
               </td>
             </tr>
           );
