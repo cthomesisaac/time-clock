@@ -65,16 +65,16 @@ export default function UserReport({ startDate, setStartDate, endDate, setEndDat
           </span>
         </div>
         <ButtonGroup className="mx-auto d-block mb-1" style={{ width: 'fit-content' }}>
-          <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(30, 'd').toDate() }))}>
+          <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().startOf('d').subtract(30, 'd').toDate() }))}>
             30 days
           </Button>
-          <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(90, 'd').toDate() }))}>
+          <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().startOf('d').subtract(90, 'd').toDate() }))}>
             90 days
           </Button>
-          <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(180, 'd').toDate() }))}>
+          <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().startOf('d').subtract(180, 'd').toDate() }))}>
             180 days
           </Button>
-          <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().subtract(365, 'd').toDate() }))}>
+          <Button onClick={() => setStartDate(startDate => ({ ...startDate, user: dayjs().startOf('d').subtract(365, 'd').toDate() }))}>
             1 year
           </Button>
         </ButtonGroup>
