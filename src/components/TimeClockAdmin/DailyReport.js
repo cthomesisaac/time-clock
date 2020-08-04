@@ -40,6 +40,7 @@ export default function DailyReport() {
         </h5>
         <AddModal date={date} addRecord={actions.addRecordFromDaily} />
         <Button onClick={() => actions.addLunchTime(records)}>Add Lunch</Button>
+        <Button onClick={() => actions.addPTOTime(date)}>Add PTO</Button>
       </div>
       <Table>
         <thead>

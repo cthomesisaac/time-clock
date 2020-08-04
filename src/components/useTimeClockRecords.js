@@ -189,6 +189,28 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
     await records.insertMany(newRecords);
   }
 
+  async function addPTOTime(date) {
+    const parsedDate = new Date(parseInt(date));
+    const newRecord = {
+      owner_id: userId,
+      owner_name: state.user.name,
+      timeIn: new Date(parsedDate.setHours(8, 0, 0, 0)),
+      timeOut: new Date(parsedDate.setHours(16, 0, 0, 0)),
+      isPTO: true
+    };
+    const insertedRecordId = await records.insertOne(newRecord);
+
+    if (insertedRecordId) {
+      dispatch({ type: 'addRecord', payload: { _id: insertedRecordId, ...newRecord } });
+      getDailyTotal(startDate, endDate, userId).then(dailyTotal => {
+        dispatch({ type: 'setDailyTotal', payload: { dailyTotal } });
+      });
+      return insertedRecordId;
+    } else {
+      console.error('Failed to add record');
+    }
+  }
+
   async function addLunchTime(recordsArray) {
     const origRecord = recordsArray[0];
     const origTimeOut = origRecord.timeOut;
@@ -264,7 +286,8 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
       editUser,
       addHolidayRecords,
       addLunchTime,
-      toggleNotifRead
+      toggleNotifRead,
+      addPTOTime
     }
   };
 }
