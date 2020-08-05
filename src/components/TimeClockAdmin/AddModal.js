@@ -12,7 +12,7 @@ export default function AddModal({ date, addRecord }) {
   
   return (
     <>
-      <Button color="success" className="align-middle" onClick={toggle}>Add Record</Button>
+      <Button color="success" className="align-middle mx-1" onClick={toggle}>Add Record</Button>
       <Modal isOpen={isOpen} toggle={toggle}>
         <ModalHeader toggle={toggle}>
           Add Record

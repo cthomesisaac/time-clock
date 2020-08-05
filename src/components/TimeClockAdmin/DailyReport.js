@@ -34,13 +34,13 @@ export default function DailyReport() {
       <h3 className="mx-3">
         <span>{moment(parseInt(date)).format('dddd, MMMM D, YYYY')}</span>
       </h3>
-      <div className="mx-3 mb-2 d-flex justify-content-between">
-        <h5 className="pt-2 m-0">
+      <div className="mx-3 mb-2 d-flex">
+        <h5 className="pt-2 mr-auto">
           {user.name}
         </h5>
         <AddModal date={date} addRecord={actions.addRecordFromDaily} />
-        <Button onClick={() => actions.addLunchTime(records)}>Add Lunch</Button>
-        <Button onClick={() => actions.addPTOTime(date)}>Add PTO</Button>
+        <Button className="mx-1" onClick={() => actions.addLunchTime(records)}>Add Lunch</Button>
+        <Button className="mx-1" onClick={() => actions.addPTOTime(date)}>Add PTO</Button>
       </div>
       <Table>
         <thead>
