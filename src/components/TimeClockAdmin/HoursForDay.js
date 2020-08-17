@@ -11,7 +11,7 @@ export default function HoursForDay({ date, userId }) {
       const startDate = new Date(date);
       const endDate = moment(date).add(1, 'd').toDate();
       const total = await getWeeklyTotal(startDate, endDate, userId);
-      setHours(total.toFixed(1));
+      setHours(total.toFixed(2));
     };
 
     getTotalHours();
