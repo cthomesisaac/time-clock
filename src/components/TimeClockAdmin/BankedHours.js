@@ -17,14 +17,14 @@ export default function BankedHours({ user, editUser }) {
 function BankedHoursView({ user, toggleEditing }) {
   return (
     <div>
-      Banked Hours: {user.bankedHours || 0}
+      Banked Hours: {user.bankedHours.toFixed(2) || 0}
       <button className="button-link" onClick={toggleEditing}>Edit</button>
     </div>
   );
 }
 
 function BankedHoursEdit({ user, toggleEditing, editUser }) {
-  const [input, setInput] = useState(user.bankedHours || 0);
+  const [input, setInput] = useState(user.bankedHours.toFixed(2) || 0);
   
   function onChange(event) {
     setInput(event.target.value);
