@@ -7,6 +7,7 @@ import WeeklyReport from './WeeklyReport';
 import UserReport from './UserReport';
 import DailyReport from './DailyReport';
 import Notifications from '../Notifications';
+import BankedHoursReport from './BankedHoursReport';
 
 export default function TimeClockAdmin() {
   const [startDate, setStartDate] = useState({
@@ -38,6 +39,9 @@ export default function TimeClockAdmin() {
         </Route>
         <Route path="/admin/notifications">
           <Notifications />
+        </Route>
+        <Route path="/admin/bankedhours">
+          <BankedHoursReport />
         </Route>
         <Route exact path="/admin">
           <WeeklyReport startDate={startDate.weekly} setStartDate={setStartDate} endDate={endDate.weekly} setEndDate={setEndDate} />
