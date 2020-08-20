@@ -23,6 +23,12 @@ export async function getWeeklyReport() {
   return report;
 }
 
+export async function getUsers() {
+  const usersArray = await users.find().toArray();
+
+  return usersArray;
+}
+
 export async function getWeeklyTotal(startDate, endDate, userId) {
   const pipeline = [
     {

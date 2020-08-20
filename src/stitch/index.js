@@ -8,15 +8,26 @@ import {
   getDailyTotal,
   getUser,
   getLastRecord,
-  getNotifications
+  getNotifications,
+  getUsers
 } from './mongodb';
 import {
-    loginAnonymous,
-    logoutCurrentUser,
-    hasLoggedInUser,
-    getCurrentUser
+  loginAnonymous,
+  logoutCurrentUser,
+  hasLoggedInUser,
+  getCurrentUser
 } from './authentication';
 
 export { app, users, records, notifications };
-export { getWeeklyReport, getWeeklyTotal, getUserReport, getDailyReport, getDailyTotal, getUser, getLastRecord, getNotifications };
+export {
+  getWeeklyReport,
+  getWeeklyTotal,
+  getUserReport,
+  getDailyReport,
+  getDailyTotal,
+  getUser,
+  getLastRecord,
+  getNotifications,
+  getUsers
+};
 export { loginAnonymous, logoutCurrentUser, hasLoggedInUser, getCurrentUser };

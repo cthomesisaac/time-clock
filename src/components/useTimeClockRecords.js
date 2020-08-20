@@ -10,7 +10,8 @@ import {
   getUser,
   users,
   notifications,
-  getNotifications
+  getNotifications,
+  getUsers
 } from '../stitch';
 
 const recordReducer = (state, { type, payload }) => {
@@ -25,6 +26,30 @@ const recordReducer = (state, { type, payload }) => {
       return {
         ...state,
         notifications: payload.notifs || []
+      };
+    }
+    case 'setUsers': {
+      return {
+        ...state,
+        users: payload.users || []
+      };
+    }
+    case 'editUserFromArray': {
+      const newArray = state.users.map(user => {
+        if (user.user_id === payload.user_id) {
+          const updatedUser = {
+            ...user,
+            bankedHours: payload.bankedHours
+          };
+          return updatedUser;
+        }
+
+        return user;
+      });
+
+      return {
+        ...state,
+        users: newArray || []
       };
     }
     case 'setFirstRecord': {
@@ -90,7 +115,8 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
     notifications: [],
     firstRecord: [],
     dailyTotal: '',
-    user: {}
+    user: {},
+    users: []
   });
 
   /* async function getRecords() {
@@ -226,6 +252,11 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
     }); */
   }
 
+  async function editUserFromArray(userId, newBankedHours) {
+    await users.updateOne({ user_id: userId }, { $set: { bankedHours: newBankedHours } });
+    dispatch({ type: 'editUserFromArray', payload: { user_id: userId, bankedHours: newBankedHours } });
+  }
+
   useEffect(() => {
     switch (reportType) {
       case 'weekly': {
@@ -266,6 +297,12 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
         });
         break;
       }
+      case 'bankedHours': {
+        getUsers().then(users => {
+          dispatch({ type: 'setUsers', payload: { users } });
+        });
+        break;
+      }
       default: {
         console.error(`Unknown reportType: ${reportType}`);
       }
@@ -278,6 +315,7 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
     firstRecord: state.firstRecord,
     dailyTotal: state.dailyTotal,
     user: state.user,
+    users: state.users,
     actions: {
       editRecord,
       deleteRecord,
@@ -287,7 +325,8 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
       addHolidayRecords,
       addLunchTime,
       toggleNotifRead,
-      addPTOTime
+      addPTOTime,
+      editUserFromArray
     }
   };
 }

@@ -5,7 +5,7 @@ import { useTimeClockRecords } from '../useTimeClockRecords';
 import BankedHours from './BankedHours';
 
 export default function BankedHoursReport() {
-  const { records, actions } = useTimeClockRecords('weekly');
+  const { users, actions } = useTimeClockRecords('bankedHours');
   return (
     <Table>
       <thead>
@@ -15,13 +15,13 @@ export default function BankedHoursReport() {
         </tr>
       </thead>
       <tbody>
-        {records.map(user => (
+        {users.map(user => (
           <tr key={user._id}>
             <td>
               {user.name}
             </td>
             <td>
-              <BankedHours user={user} editUser={actions.editUser} />
+              <BankedHours user={user} editUser={actions.editUserFromArray} />
             </td>
           </tr>
         ))}
