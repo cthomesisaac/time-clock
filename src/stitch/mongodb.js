@@ -19,7 +19,7 @@ export async function getWeeklyReport() {
       user.hasClockedIn = false;
     }
   }
-  
+
   return report;
 }
 
@@ -189,4 +189,36 @@ export async function getLastRecord(userId) {
 
 export async function getNotifications() {
   return await notifications.find({ type: { $exists: true } }, { sort: { date: -1 } }).toArray();
+}
+
+export async function getWeeklyBankedHours(start, end, userId) {
+  const pipeline = [
+    {
+      $match: {
+        dayModified: {
+          $gte: start,
+          $lte: end
+        },
+        user_id: userId
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        hoursAdded: { $sum: '$addedHours' },
+        hoursSubtracted: { $sum: '$subtractedHours' }
+      }
+    },
+    {
+      $addFields: {
+        totalChange: {
+          $subtract: ['$hoursAdded', '$hoursSubtracted']
+        }
+      }
+    }
+  ];
+
+  const res = await notifications.aggregate(pipeline).toArray();
+  console.log(res);
+  return res;
 }
