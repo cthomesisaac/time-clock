@@ -8,15 +8,18 @@ import UserReport from './UserReport';
 import DailyReport from './DailyReport';
 import Notifications from '../Notifications';
 import BankedHoursReport from './BankedHoursReport';
+import WeeklyBankedHoursReport from './WeeklyBankedHoursReport';
 
 export default function TimeClockAdmin() {
   const [startDate, setStartDate] = useState({
     weekly: dayjs().startOf('day').day(1).startOf('day').toDate(),
-    user: dayjs().startOf('day').subtract(30, 'd').toDate()
+    user: dayjs().startOf('day').subtract(30, 'd').toDate(),
+    bankedHours: dayjs().startOf('day').day(-6).toDate()
   });
   const [endDate, setEndDate] = useState({
     weekly: dayjs().day(6).endOf('day').toDate(),
-    user: dayjs().endOf('day').toDate()
+    user: dayjs().endOf('day').toDate(),
+    bankedHours: dayjs().startOf('day').day(-1).toDate()
   });
 
   useEffect(() => {
@@ -42,6 +45,9 @@ export default function TimeClockAdmin() {
         </Route>
         <Route path="/admin/bankedhours">
           <BankedHoursReport />
+        </Route>
+        <Route path="/admin/weeklybankedhours">
+          <WeeklyBankedHoursReport start={startDate.bankedHours} end={endDate.bankedHours} setStart={setStartDate} setEnd={setEndDate} />
         </Route>
         <Route exact path="/admin">
           <WeeklyReport startDate={startDate.weekly} setStartDate={setStartDate} endDate={endDate.weekly} setEndDate={setEndDate} />
