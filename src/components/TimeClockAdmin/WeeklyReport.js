@@ -70,7 +70,8 @@ export default function WeeklyReport({ startDate, setStartDate, endDate, setEndD
       <div>
         <AddModal date={new Date().valueOf()} addRecord={actions.addHolidayRecords} />
         <span>
-          <Button tag={Link} to="/admin/bankedhours" className="align-middle mx-1 mb-1">View/Edit Banked Hours</Button>
+          <Button tag={Link} to="/admin/bankedhours" className="align-middle ml-1 mb-1">View/Edit Banked Hours</Button>
+          <Button tag={Link} to="/admin/weeklybankedhours" className="align-middle ml-1 mb-1">Banked Hours Report</Button>
         </span>
       </div>
       <Table>
