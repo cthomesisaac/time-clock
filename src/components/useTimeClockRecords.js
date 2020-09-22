@@ -11,7 +11,8 @@ import {
   users,
   notifications,
   getNotifications,
-  getUsers
+  getUsers,
+  app
 } from '../stitch';
 
 const recordReducer = (state, { type, payload }) => {
@@ -153,7 +154,8 @@ export function useTimeClockRecords(reportType, startDate, endDate, userId = nul
   }
   
   async function deleteRecord(id) {
-    await records.deleteOne({ _id: id });
+    // await records.deleteOne({ _id: id });
+    await app.callFunction('evalBankedHoursDeleted', [id]);
     dispatch({ type: 'deleteRecord', payload: id });
     getDailyTotal(startDate, endDate, userId).then(dailyTotal => {
       dispatch({ type: 'setDailyTotal', payload: { dailyTotal } });
