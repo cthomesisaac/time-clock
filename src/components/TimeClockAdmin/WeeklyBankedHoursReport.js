@@ -45,16 +45,15 @@ export default function WeeklyBankedHoursReport({ start, end, setStart, setEnd }
         <thead>
           <tr>
             <th>Name</th>
-            <th>Hours Added</th>
-            <th>Hours Subtracted</th>
-            <th>Total Change</th>
+            <th>Hours For Week</th>
+            <th>Change For Week</th>
           </tr>
         </thead>
         <tbody>
           {users.map(user => (
             <tr key={user._id}>
               <td>{user.name}</td>
-              <WeeklyBankedHours start={start} end={end} userId={user.user_id} />
+              <WeeklyBankedHours start={start} userId={user.user_id} />
             </tr>
           ))}
         </tbody>

@@ -2,28 +2,28 @@ import React, { useState, useEffect, Fragment } from 'react';
 
 import { getWeeklyBankedHours } from '../../stitch/mongodb';
 
-export default function WeeklyBankedHours({ start, end, userId }) {
+export default function WeeklyBankedHours({ start, userId }) {
   const [weeklyBankedHours, setWeeklyBankedHours] = useState({
-    hoursAdded: 0,
-    hoursSubtracted: 0,
-    totalChange: 0
+    hoursForWeek: 0,
+    netChange: 0
   });
 
   useEffect(() => {
     const fetchWeeklyBankedHours = async () => {
-      const res = await getWeeklyBankedHours(start, end, userId);
-      console.log(res);
-      setWeeklyBankedHours(res[0] || res);
+      const res = await getWeeklyBankedHours(start, userId);
+      setWeeklyBankedHours({
+        hoursForWeek: res.hoursForWeek,
+        netChange: res.netChange.amountChanged || 0
+      });
     };
 
     fetchWeeklyBankedHours();
-  }, [start, end, userId]);
+  }, [start, userId]);
 
   return (
     <Fragment>
-      <td>{weeklyBankedHours.hoursAdded || 0}</td>
-      <td>{weeklyBankedHours.hoursSubtracted || 0}</td>
-      <td>{weeklyBankedHours.totalChange || 0}</td>
+      <td>{weeklyBankedHours.hoursForWeek.toFixed(2)}</td>
+      <td>{weeklyBankedHours.netChange.toFixed(2)}</td>
     </Fragment>
   )
 }

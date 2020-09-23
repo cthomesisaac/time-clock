@@ -1,4 +1,5 @@
 import { RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
+import moment from 'moment';
 
 import { app } from './app';
 
@@ -7,6 +8,7 @@ const mongoClient = app.getServiceClient(RemoteMongoClient.factory, 'mongodb-atl
 export const records = mongoClient.db('time-clock').collection('records');
 export const users = mongoClient.db('time-clock').collection('users');
 export const notifications = mongoClient.db('time-clock').collection('notifications');
+export const bankLogs = mongoClient.db('time-clock').collection('bankLogs');
 
 export async function getWeeklyReport() {
   const report = await users.find().toArray();
@@ -191,34 +193,18 @@ export async function getNotifications() {
   return await notifications.find({ type: { $exists: true } }, { sort: { date: -1 } }).toArray();
 }
 
-export async function getWeeklyBankedHours(start, end, userId) {
-  const pipeline = [
-    {
-      $match: {
-        dayModified: {
-          $gte: start,
-          $lte: end
-        },
-        user_id: userId
-      }
-    },
-    {
-      $group: {
-        _id: null,
-        hoursAdded: { $sum: '$addedHours' },
-        hoursSubtracted: { $sum: '$subtractedHours' }
-      }
-    },
-    {
-      $addFields: {
-        totalChange: {
-          $subtract: ['$hoursAdded', '$hoursSubtracted']
-        }
-      }
-    }
-  ];
+export async function getWeeklyBankedHours(start, userId) {
+  const week = moment(start).week();
+  const year = moment(start).year();
+  const netChange = await bankLogs.find({
+    user_id: userId, week, year
+  },
+  {
+    sort: { date: -1 }
+  }).first();
 
-  const res = await notifications.aggregate(pipeline).toArray();
-  console.log(res);
-  return res;
+  const timeForWeek = await app.callFunction('calculateTimeForWeek', [userId, start]);
+  const hoursForWeek = timeForWeek.hours;
+
+  return { hoursForWeek, netChange };
 }
