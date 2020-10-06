@@ -15,6 +15,9 @@ export default function AuthSwitch({ userRole }) {
           <Route path="/dashboard">
             <TimeClock />
           </Route>
+          <Route path="/login">
+            <Redirect to="/dashboard" />
+          </Route>
           <Route exact path="/">
             <Redirect to="/dashboard" />
           </Route>
@@ -28,6 +31,9 @@ export default function AuthSwitch({ userRole }) {
         <Switch>
           <Route path="/dashboard">
             <TimeClock />
+          </Route>
+          <Route path="/login">
+            <Redirect to="/dashboard" />
           </Route>
           <Route exact path="/">
             <Redirect to="/dashboard" />
