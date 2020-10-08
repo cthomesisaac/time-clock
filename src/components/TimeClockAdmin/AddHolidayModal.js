@@ -12,7 +12,7 @@ export default function AddModal({ date, addRecord }) {
   
   return (
     <>
-      <Button color="success" className="ml-3 mb-1" onClick={toggle}>Add Holiday Records</Button>
+      <Button color="success" onClick={toggle}>Add Holiday Records</Button>
       <Modal isOpen={isOpen} toggle={toggle}>
         <ModalHeader toggle={toggle}>
           Add Holiday Records

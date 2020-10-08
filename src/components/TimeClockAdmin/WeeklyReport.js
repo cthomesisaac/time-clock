@@ -67,11 +67,11 @@ export default function WeeklyReport({ startDate, setStartDate, endDate, setEndD
           4 weeks ago
         </Button>
       </ButtonGroup>
-      <div>
+      <div className="mx-auto d-block mb-1" style={{ width: 'fit-content' }}>
         <AddModal date={new Date().valueOf()} addRecord={actions.addHolidayRecords} />
         <span>
-          <Button tag={Link} to="/admin/bankedhours" className="align-middle ml-1 mb-1">View/Edit Banked Hours</Button>
-          <Button tag={Link} to="/admin/weeklybankedhours" className="align-middle ml-1 mb-1">Banked Hours Report</Button>
+          <Button tag={Link} to="/admin/bankedhours" className="align-middle ml-1">View/Edit Banked Hours</Button>
+          <Button tag={Link} to="/admin/weeklybankedhours" className="align-middle ml-1">Banked Hours Report</Button>
         </span>
       </div>
       <Table>
